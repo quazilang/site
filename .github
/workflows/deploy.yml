@@ -1,0 +1,32 @@
+name: Deploy Hugo site to quazilang.github.io
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive   # якщо тема підключена як git submodule
+          fetch-depth: 0          # потрібно Hugo для дат/git-info
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest'
+          extended: true          # true, якщо тема потребує Hugo Extended (SCSS/SASS)
+
+      - name: Build Hugo site
+        run: hugo --minify
+
+      - name: Deploy to quazilang.github.io repo
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.GH_PAT }}
+          external_repository: quazilang/quazilang.github.io
+          publish_branch: main
+          publish_dir: ./public

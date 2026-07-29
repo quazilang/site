@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="generator" content="Hugo 0.163.3"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quazi Programming Language</title>
+
+  
+  <link rel="stylesheet" href="/css/beer.min.css">
+
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+
+  <style>
+     
+    *, body, button, input, select, textarea, h1, h2, h3, h4, h5, h6, a, span, p, div {
+      font-family: 'Comfortaa', system-ui, -apple-system, sans-serif;
+    }
+
+     
+    i, .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined' !important;
+      font-style: normal;
+      font-weight: normal;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      line-height: 1 !important;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+     
+    :root, body.dark {
+      --primary: #cfbcff;
+      --on-primary: #381e72;
+      --primary-container: #4f378b;
+      --on-primary-container: #eaddff;
+
+      --surface-container-lowest: #0f0d13;
+      --surface-container-low: #1d1b20;
+      --surface-container: #211f26;
+      --surface-container-high: #2b2831;
+      --surface-container-highest: #36343b;
+
+      --background: #141218;
+      --surface: #141218;
+      --on-surface: #e6e0e9;
+      --on-surface-variant: #cac4d0;
+      --outline: #49454f;
+    }
+
+     
+    body.dark.black, body.black {
+      --background: #000000 !important;
+      --surface: #000000 !important;
+      --surface-container-lowest: #000000 !important;
+      background-color: #000000 !important;
+    }
+
+     
+    body.light {
+      --primary: #6750a4;
+      --on-primary: #ffffff;
+      --primary-container: #eaddff;
+      --on-primary-container: #21005d;
+
+      --surface-container-lowest: #ffffff;
+      --surface-container-low: #f7f2fa;
+      --surface-container: #f3edf7;
+      --surface-container-high: #ece6f0;
+      --surface-container-highest: #e6e0e9;
+
+      --background: #fdf8ff;
+      --surface: #fdf8ff;
+      --on-surface: #1d1b20;
+      --on-surface-variant: #49454f;
+      --outline: #79747e;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--on-surface);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+     
+    article.card, pre, textarea, menu {
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+     
+    .nav-grid {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      width: 100%;
+      gap: 16px;
+    }
+
+    .nav-left { justify-self: start; white-space: nowrap; cursor: pointer; }
+    .nav-center { justify-self: center; white-space: nowrap; }
+    .nav-right { justify-self: end; white-space: nowrap; }
+
+     
+    html body button,
+    html body .button,
+    html body a.button,
+    html body .button.border,
+    html body .button.fill,
+    html body .button.primary,
+    html body .chip,
+    html body input[type="button"],
+    html body input[type="submit"],
+    html body .nav-pill,
+    html body menu a {
+      border-radius: 32px !important;
+      box-shadow: none !important;
+      transform: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      transition: border-radius 0.35s cubic-bezier(0.2, 0, 0.2, 1), background-color 0.15s ease, color 0.15s ease !important;
+    }
+
+     
+    html body button:active,
+    html body .button:active,
+    html body a.button:active,
+    html body .button.border:active,
+    html body .button.fill:active,
+    html body .button.primary:active,
+    html body .chip:active,
+    html body input[type="button"]:active,
+    html body input[type="submit"]:active,
+    html body .nav-pill:active,
+    html body menu a:active,
+    html body .is-morphed {
+      border-radius: 10px !important;
+      transition: border-radius 0.05s ease-out !important;
+    }
+
+     
+    .nav-pill {
+      padding: 8px 18px;
+      color: var(--on-surface-variant) !important;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background-color: transparent;
+    }
+
+    .nav-pill:hover {
+      background-color: var(--surface-container-highest) !important;
+      color: var(--primary) !important;
+    }
+
+    .nav-pill.active-pill {
+      background-color: var(--primary-container) !important;
+      color: var(--on-primary-container) !important;
+    }
+
+    .hero-title {
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+    }
+
+     
+    .hero-action-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+     
+    .code-block-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .code-block-wrapper pre {
+      margin: 0;
+      padding-right: 48px !important;
+      overflow-x: auto;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 32px !important;
+      height: 32px !important;
+      padding: 0 !important;
+      border-radius: 50% !important;
+      background-color: var(--surface-container-lowest) !important;
+      color: var(--on-surface-variant) !important;
+      cursor: pointer;
+      border: none;
+      opacity: 0.8;
+      transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      opacity: 1;
+      background-color: var(--primary-container) !important;
+      color: var(--on-primary-container) !important;
+    }
+
+    .copy-btn.copied {
+      color: #4caf50 !important;
+    }
+
+     
+    .grid > [class*="s12"] {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .grid .card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      flex: 1;
+      border-radius: 20px !important;
+    }
+
+    .tool-card {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      margin-bottom: 24px;
+    }
+
+    .footer-link {
+      color: var(--on-surface-variant);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.15s ease;
+      cursor: pointer;
+    }
+
+    .footer-link:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+     
+    .page-view {
+      display: none;
+      opacity: 0;
+    }
+
+    .page-view.active-view {
+      display: block;
+      animation: viewFadeIn 0.25s cubic-bezier(0.2, 0, 0, 1) forwards;
+    }
+
+    @keyframes viewFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    code, pre {
+      font-family: monospace !important;
+    }
+  </style>
+</head>
+<body class="dark">
+
+  
+  <header class="surface-container-low" style="position: sticky; top: 0; z-index: 100;">
+    <nav class="container padding">
+      <div class="nav-grid">
+
+        
+        <div onclick="switchTab('home')" class="row middle-align gap-small nav-left">
+          <i class="primary-text" style="font-size: 2rem;">memory</i>
+          <h5 class="bold primary-text margin-none">Quazi</h5>
+        </div>
+
+        
+        <div class="row gap-small middle-align nav-center hide-on-small">
+          <a onclick="switchTab('install')" data-tab="install" class="nav-pill">Install</a>
+          <a onclick="switchTab('learn')" data-tab="learn" class="nav-pill">Learn</a>
+          <a onclick="switchTab('playground')" data-tab="playground" class="nav-pill">Playground</a>
+          <a onclick="switchTab('tools')" data-tab="tools" class="nav-pill">Tools</a>
+          <a onclick="switchTab('community')" data-tab="community" class="nav-pill">Community</a>
+        </div>
+
+        
+        <div class="row middle-align gap-small nav-right">
+          <div class="chip small surface-container-high">
+            <i>language</i>
+            <span>EN</span>
+          </div>
+
+          <button class="button transparent circle" data-ui="#theme-menu">
+            <i>palette</i>
+          </button>
+          <menu id="theme-menu" class="vertical surface-container-high">
+            <a onclick="setTheme('dark')">Dark</a>
+            <a onclick="setTheme('black')">Black (OLED)</a>
+            <a onclick="setTheme('light')">White</a>
+            <a onclick="setTheme('system')">System</a>
+          </menu>
+        </div>
+
+      </div>
+    </nav>
+  </header>
+
+  <main class="responsive padding">
+
+    
+    <div id="view-home" class="page-view active-view">
+      <section class="container margin padding-top">
+        <div class="space"></div>
+
+        <div class="row middle-align gap wrap">
+          <h1 class="extra hero-title margin-none" style="font-size: 5rem;">Quazi</h1>
+
+          <div class="hero-action-block">
+            <span style="color: var(--primary); font-family: monospace !important; font-size: 0.85rem; font-weight: bold; width: 100%; text-align: center;">
+              v0.26.1
+            </span>
+            <button onclick="switchTab('install')" class="button fill primary padding">
+              <i>rocket_launch</i>
+              <span style="font-weight: 700;">Get started</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="large-text margin-top" style="max-width: 640px; color: var(--on-surface-variant); line-height: 1.6;">
+          A minimalist, zero-dependency systems programming language and custom compiler environment. Engineered for bare-metal control, absolute memory predictability, and zero-bloat compilation.
+        </p>
+
+        <div class="space"></div>
+      </section>
+
+      
+      <section class="container margin">
+        <div class="space"></div>
+        <h4 class="bold">Language Features</h4>
+        <div class="space"></div>
+
+        <div class="grid">
+          <div class="s12 m4">
+            <article class="card fill surface-container-low padding">
+              <i class="extra primary-text" style="font-size: 2.5rem; justify-content: flex-start;">file_aggregation</i>
+              <h6 class="bold margin-top-small">Whole Program Pipeline</h6>
+              <p class="small-text" style="color: var(--on-surface-variant); line-height: 1.5;">
+                Quazi eliminates multi-object compilation overhead. Source files undergo global type analysis and monolithic link-time optimization directly into a single <code>.qzi</code> bytecode.
+              </p>
+            </article>
+          </div>
+
+          <div class="s12 m4">
+            <article class="card fill surface-container-low padding">
+              <i class="extra primary-text" style="font-size: 2.5rem; justify-content: flex-start;">terminal</i>
+              <h6 class="bold margin-top-small">Custom QZI Intermediate Target</h6>
+              <p class="small-text" style="color: var(--on-surface-variant); line-height: 1.5;">
+                Built completely from scratch without third-party compiler dependencies. The intermediate bytecode format ensures lightning-fast pass rates and deterministic output generation.
+              </p>
+            </article>
+          </div>
+
+          <div class="s12 m4">
+            <article class="card fill surface-container-low padding">
+              <i class="extra primary-text" style="font-size: 2.5rem; justify-content: flex-start;">memory</i>
+              <h6 class="bold margin-top-small">Deterministic Memory Model</h6>
+              <p class="small-text" style="color: var(--on-surface-variant); line-height: 1.5;">
+                Strict compile-time lifetime checks with zero garbage collection pause times, engineered specifically for microkernel user-space servers and standalone init daemons.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      
+      <section class="container margin">
+        <div class="space"></div>
+        <h4 class="bold">Build it in Quazi</h4>
+        <div class="space"></div>
+
+        <div class="grid">
+          <div class="s12 m4">
+            <article class="card fill surface-container-low padding">
+              <i class="extra primary-text" style="font-size: 2.5rem; justify-content: flex-start;">terminal</i>
+              <h6 class="bold">Command Line Tools</h6>
+              <p style="color: var(--on-surface-variant); line-height: 1.5;">
+                Whip up CLI utilities with instant startup times, zero external runtime dependencies, and effortless single-binary distribution.
+              </p>
+            </article>
+          </div>
+
+          <div class="s12 m4">
+            <article class="card fill surface-container-low padding">
+              <i class="extra primary-text" style="font-size: 2.5rem; justify-content: flex-start;">developer_board</i>
+              <h6 class="bold">Microkernels & Embedded</h6>
+              <p style="color: var(--on-surface-variant); line-height: 1.5;">
+                Targeting bare-metal hardware or custom microkernel OS architectures? Quazi provides total low-level memory and syscall control.
+              </p>
+            </article>
+          </div>
+
+          <div class="s12 m4">
+            <article class="card fill surface-container-low padding">
+              <i class="extra primary-text" style="font-size: 2.5rem; justify-content: flex-start;">dns</i>
+              <h6 class="bold">Systems & Networking</h6>
+              <p style="color: var(--on-surface-variant); line-height: 1.5;">
+                Predictable low-latency performance and an ultra-tiny memory footprint tailored for background daemons and system services.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      
+      <section class="container margin">
+        <div class="space"></div>
+        <h4 class="bold">Get Involved</h4>
+        <div class="space"></div>
+
+        <div class="grid">
+          <div class="s12 m6">
+            <article class="card fill surface-container-low padding">
+              <i class="extra primary-text" style="font-size: 2.5rem; justify-content: flex-start;">menu_book</i>
+              <h6 class="bold margin-top-small">Read Quazi</h6>
+              <p style="color: var(--on-surface-variant); line-height: 1.5;">
+                Explore the official language spec, core design manuals, and guides on writing standalone initialization daemons and drivers.
+              </p>
+              <button onclick="switchTab('learn')" class="button border margin-top-small" style="width: fit-content;">Read Documentation</button>
+            </article>
+          </div>
+
+          <div class="s12 m6">
+            <article class="card fill surface-container-low padding">
+              <i class="extra primary-text" style="font-size: 2.5rem; justify-content: flex-start;">groups</i>
+              <h6 class="bold margin-top-small">Contribute</h6>
+              <p style="color: var(--on-surface-variant); line-height: 1.5;">
+                Quazi is a community-driven project built in the open. Help refine the bootstrap toolchain, bytecode target, and system libraries.
+              </p>
+              <a href="https://github.com/quazilang" target="_blank" rel="noopener" class="button border margin-top-small" style="width: fit-content;">GitHub Repository</a>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    
+    <div id="view-install" class="page-view">
+      <section class="container margin padding-top">
+        <div class="space"></div>
+        <h2 class="bold primary-text">Installing Quazi</h2>
+        <p class="large-text" style="color: var(--on-surface-variant);">
+          Get up and running with the Quazi bootstrap toolchain in seconds.
+        </p>
+        <div class="space"></div>
+
+        <article class="card fill surface-container-low padding tool-card">
+          <h5 class="bold">Quick Installation Script</h5>
+          <p style="color: var(--on-surface-variant);">Run this command in your terminal to download and install the latest release:</p>
+
+          <div class="code-block-wrapper margin-top-small">
+            <pre class="padding surface-container-high round" style="border-radius: 14px;"><code>curl --proto '=https' --tlsv1.2 -sSf https://quazilang.github.io/install.sh | sh</code></pre>
+            <button onclick="copyCode(this)" class="copy-btn" title="Copy command">
+              <i>content_copy</i>
+            </button>
+          </div>
+        </article>
+
+        <article class="card fill surface-container-low padding tool-card">
+          <h5 class="bold">Build Toolchain From Source</h5>
+          <p style="color: var(--on-surface-variant);">Bootstrap Quazi locally using the official repository:</p>
+
+          <div class="code-block-wrapper margin-top-small">
+            <pre class="padding surface-container-high round" style="border-radius: 14px;"><code>git clone https://github.com/quazilang/quazistrap.git
+cd quazistrap
+cargo build --release</code></pre>
+            <button onclick="copyCode(this)" class="copy-btn" title="Copy commands">
+              <i>content_copy</i>
+            </button>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    
+    <div id="view-learn" class="page-view">
+      <section class="container margin padding-top">
+        <div class="space"></div>
+        <h2 class="bold primary-text">Learn Quazi</h2>
+      </section>
+    </div>
+
+    
+    <div id="view-playground" class="page-view">
+      <section class="container margin padding-top">
+        <div class="space"></div>
+        <h2 class="bold primary-text">Quazi Interactive Playground</h2>
+      </section>
+    </div>
+
+    
+    <div id="view-tools" class="page-view">
+      <section class="container margin padding-top">
+        <div class="space"></div>
+        <h2 class="bold primary-text">Tools</h2>
+        <div class="space"></div>
+
+        
+        <article class="card fill surface-container-low padding tool-card">
+          <h4 class="bold primary-text">First-class editor support</h4>
+          <p style="color: var(--on-surface-variant); line-height: 1.6;">
+            Whether you prefer working with code from the command line, or using rich graphical editors, there’s a Quazi integration available for your editor of choice.
+          </p>
+          <div class="row wrap gap-small margin-top">
+            <span class="chip surface-container-high">VS Code</span>
+            <span class="chip surface-container-high">Vim/Neovim</span>
+            <span class="chip surface-container-high">RustRover</span>
+            <span class="chip surface-container-high">Helix</span>
+            <span class="chip surface-container-high">Emacs</span>
+            <span class="chip surface-container-high">Sublime Text</span>
+            <span class="chip surface-container-high">Visual Studio</span>
+            <span class="chip surface-container-high">Zed</span>
+          </div>
+        </article>
+
+        
+        <article class="card fill surface-container-low padding tool-card">
+          <h4 class="bold primary-text">Bring calmness to your builds</h4>
+          <p style="color: var(--on-surface-variant); line-height: 1.6;">
+            The Quazi toolchain bundles all common actions into a single command workflow.
+          </p>
+
+          <div class="grid margin-top" style="align-items: stretch;">
+            <div class="s12 m4">
+              <h6 class="bold primary-text">Install</h6>
+              <p class="small-text" style="color: var(--on-surface-variant); line-height: 1.5;">
+                With thousands of packages available, easily pull dependencies and move your team from repetition to innovation.
+              </p>
+            </div>
+            <div class="s12 m4">
+              <h6 class="bold primary-text">Test</h6>
+              <p class="small-text" style="color: var(--on-surface-variant); line-height: 1.5;">
+                Bring confidence to your code through unified testing tools. Write tests next to your code or in separate files.
+              </p>
+            </div>
+            <div class="s12 m4">
+              <h6 class="bold primary-text">Deploy</h6>
+              <p class="small-text" style="color: var(--on-surface-variant); line-height: 1.5;">
+                Creates lean binaries for every platform with a single command without bespoke build files.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        
+        <article class="card fill surface-container-low padding tool-card">
+          <h4 class="bold primary-text">Velocity through automation</h4>
+          <p style="color: var(--on-surface-variant); line-height: 1.6;">
+            Quazi’s industry-grade tools make collaboration fearless, allowing teams to focus on tasks that matter.
+          </p>
+
+          <div class="grid margin-top" style="align-items: stretch;">
+            <div class="s12 m4">
+              <article class="card fill surface-container-high padding" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                <div>
+                  <h6 class="bold">QuaziFmt</h6>
+                  <p class="small-text" style="color: var(--on-surface-variant); line-height: 1.5;">
+                    QuaziFmt automatically formats Quazi code, making it easier to read, write, and maintain.
+                  </p>
+                </div>
+                <button class="button border margin-top-small" style="width: fit-content;">Go to repo</button>
+              </article>
+            </div>
+
+            <div class="s12 m4">
+              <article class="card fill surface-container-high padding" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                <div>
+                  <h6 class="bold">QuaziLint</h6>
+                  <p class="small-text" style="color: var(--on-surface-variant); line-height: 1.5;">
+                    QuaziLint helps developers of all experience levels write idiomatic code and enforce standard compiler rules.
+                  </p>
+                </div>
+                <button class="button border margin-top-small" style="width: fit-content;">Go to repo</button>
+              </article>
+            </div>
+
+            <div class="s12 m4">
+              <article class="card fill surface-container-high padding" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                <div>
+                  <h6 class="bold">QuaziDoc</h6>
+                  <p class="small-text" style="color: var(--on-surface-variant); line-height: 1.5;">
+                    QuaziDoc makes sure no API ever goes undocumented. Available locally and online for public modules.
+                  </p>
+                </div>
+                <button class="button border margin-top-small" style="width: fit-content;">Go to site</button>
+              </article>
+            </div>
+          </div>
+        </article>
+
+      </section>
+    </div>
+
+    
+    <div id="view-community" class="page-view">
+      <section class="container margin padding-top">
+        <div class="space"></div>
+        <h2 class="bold primary-text">Quazi Community</h2>
+        <p class="large-text" style="color: var(--on-surface-variant);">
+          Join system developers building transparent and fast software in the open.
+        </p>
+        <div class="space"></div>
+
+        <div class="grid">
+          <div class="s12 m6">
+            <article class="card fill surface-container-low padding">
+              <i class="extra primary-text" style="font-size: 2.5rem; justify-content: flex-start;">code</i>
+              <h5 class="bold margin-top-small">GitHub Organization</h5>
+              <p style="color: var(--on-surface-variant);">
+                Contribute code, report bugs, or audit the toolchain implementation directly on GitHub.
+              </p>
+              <a href="https://github.com/quazilang" target="_blank" rel="noopener" class="button fill primary margin-top-small" style="width: fit-content;">Open GitHub</a>
+            </article>
+          </div>
+
+          <div class="s12 m6">
+            <article class="card fill surface-container-low padding">
+              <i class="extra primary-text" style="font-size: 2.5rem; justify-content: flex-start;">chat</i>
+              <h5 class="bold margin-top-small">Discussion Channels</h5>
+              <p style="color: var(--on-surface-variant);">
+                Connect with maintainers and collaborate on low-level language extensions.
+              </p>
+              <div class="row gap-small margin-top-small">
+                <button class="button border">Discord</button>
+                <button class="button border">Matrix</button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="space"></div>
+  </main>
+
+  
+  <footer class="surface-container-lowest padding-large center-align">
+    <div class="container">
+
+      <div class="grid margin-bottom">
+        <div class="s12 m4 center-align">
+          <h6 class="bold primary-text">Get Help</h6>
+          <div class="column gap-small center-align margin-top-small">
+            <a onclick="switchTab('learn')" class="footer-link">Documentation</a>
+            <a onclick="switchTab('learn')" class="footer-link">Frequently Asked Questions</a>
+            <a href="https://github.com/quazilang/quazi/issues" target="_blank" rel="noopener" class="footer-link">Issue Tracker</a>
+            <a onclick="switchTab('community')" class="footer-link">Community Support</a>
+          </div>
+        </div>
+
+        <div class="s12 m4 center-align">
+          <h6 class="bold primary-text">Terms & Policies</h6>
+          <div class="column gap-small center-align margin-top-small">
+            <a class="footer-link">MIT License</a>
+            <a class="footer-link">Privacy Policy</a>
+            <a class="footer-link">Code of Conduct</a>
+            <a class="footer-link">Security Policy</a>
+          </div>
+        </div>
+
+        <div class="s12 m4 center-align">
+          <h6 class="bold primary-text">Social</h6>
+          <div class="column gap-small center-align margin-top-small">
+            <a href="https://github.com/quazilang" target="_blank" rel="noopener" class="footer-link">GitHub Organization</a>
+            <a onclick="switchTab('community')" class="footer-link">Discord Server</a>
+            <a onclick="switchTab('community')" class="footer-link">Matrix Room</a>
+            <a onclick="switchTab('community')" class="footer-link">Developer Blog</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider margin"></div>
+
+      <p class="small-text margin-none center-align" style="color: var(--on-surface-variant);">
+        Quazilang and this site are <a href="https://github.com/quazilang" target="_blank" rel="noopener" style="color: var(--primary); text-decoration: underline;">opensource</a>.
+      </p>
+
+      <p class="small-text opacity-70 center-align margin-top-small">
+        Copyright (c) 2026 quazilang
+      </p>
+
+    </div>
+  </footer>
+
+  
+  <script>
+     
+    function copyCode(btn) {
+      const wrapper = btn.closest('.code-block-wrapper');
+      const code = wrapper.querySelector('code').innerText;
+
+      navigator.clipboard.writeText(code).then(() => {
+        const icon = btn.querySelector('i');
+        icon.innerText = 'check';
+        btn.classList.add('copied');
+
+        setTimeout(() => {
+          icon.innerText = 'content_copy';
+          btn.classList.remove('copied');
+        }, 1500);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    }
+
+     
+    let activeMorphed = null;
+
+    ['pointerdown', 'mousedown', 'touchstart'].forEach(evtType => {
+      document.addEventListener(evtType, (e) => {
+        const target = e.target.closest('button, .button, a.button, .chip, .nav-pill, menu a, input[type="button"], input[type="submit"]');
+        if (target) {
+          activeMorphed = target;
+          target.classList.add('is-morphed');
+        }
+      }, { passive: true });
+    });
+
+    ['pointerup', 'mouseup', 'touchend', 'pointercancel'].forEach(evtType => {
+      document.addEventListener(evtType, () => {
+        if (activeMorphed) {
+          const target = activeMorphed;
+          setTimeout(() => target.classList.remove('is-morphed'), 120);
+          activeMorphed = null;
+        }
+      }, { passive: true });
+    });
+
+    function switchTab(tabId, updateHash = true) {
+      const views = document.querySelectorAll('.page-view');
+      views.forEach(view => view.classList.remove('active-view'));
+
+      let targetView = document.getElementById('view-' + tabId);
+      if (!targetView) {
+        tabId = 'home';
+        targetView = document.getElementById('view-home');
+      }
+      targetView.classList.add('active-view');
+
+      document.querySelectorAll('.nav-pill').forEach(pill => {
+        pill.classList.remove('active-pill');
+      });
+
+      const activePill = document.querySelector(`[data-tab="${tabId}"]`);
+      if (activePill) {
+        activePill.classList.add('active-pill');
+      }
+
+      if (updateHash) {
+        if (history.pushState) {
+          history.pushState(null, null, '#' + tabId);
+        } else {
+          location.hash = '#' + tabId;
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        switchTab(hash, false);
+      } else {
+        switchTab('home', false);
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const initialHash = window.location.hash.replace('#', '');
+      if (initialHash && document.getElementById('view-' + initialHash)) {
+        switchTab(initialHash, false);
+      } else {
+        switchTab('home', false);
+      }
+    });
+
+    function setTheme(theme) {
+      if (theme === 'system') {
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.body.className = isDark ? 'dark' : 'light';
+      } else if (theme === 'black') {
+        document.body.className = 'dark black';
+      } else {
+        document.body.className = theme;
+      }
+    }
+  </script>
+
+</body>
+</html>
