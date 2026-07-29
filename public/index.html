@@ -112,7 +112,11 @@
     }
 
     .nav-left { justify-self: start; white-space: nowrap; cursor: pointer; }
-    .nav-center { justify-self: center; white-space: nowrap; }
+    .nav-center {
+      justify-self: center;
+      white-space: nowrap;
+      max-width: 100%;
+    }
     .nav-right { justify-self: end; white-space: nowrap; }
 
      
@@ -156,13 +160,14 @@
 
      
     .nav-pill {
-      padding: 8px 18px;
+      padding: 6px 14px;
       color: var(--on-surface-variant) !important;
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       cursor: pointer;
       background-color: transparent;
+      flex-shrink: 0;
     }
 
     .nav-pill:hover {
@@ -173,6 +178,34 @@
     .nav-pill.active-pill {
       background-color: var(--primary-container) !important;
       color: var(--on-primary-container) !important;
+    }
+
+     
+    @media (max-width: 768px) {
+      .nav-grid {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        gap: 8px 12px;
+      }
+
+      .nav-left { grid-column: 1; grid-row: 1; }
+      .nav-right { grid-column: 2; grid-row: 1; }
+
+      .nav-center {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        width: 100%;
+        overflow-x: auto;
+        display: flex !important;
+        justify-content: flex-start;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;  
+      }
+
+      .nav-center::-webkit-scrollbar {
+        display: none;  
+      }
     }
 
     .hero-title {
@@ -292,7 +325,7 @@
 
   
   <header class="surface-container-low" style="position: sticky; top: 0; z-index: 100;">
-    <nav class="container padding">
+    <nav class="container padding-small">
       <div class="nav-grid">
 
         
@@ -302,7 +335,7 @@
         </div>
 
         
-        <div class="row gap-small middle-align nav-center hide-on-small">
+        <div class="row gap-small middle-align nav-center">
           <a onclick="switchTab('install')" data-tab="install" class="nav-pill">Install</a>
           <a onclick="switchTab('learn')" data-tab="learn" class="nav-pill">Learn</a>
           <a onclick="switchTab('playground')" data-tab="playground" class="nav-pill">Playground</a>
@@ -340,7 +373,7 @@
         <div class="space"></div>
 
         <div class="row middle-align gap wrap">
-          <h1 class="extra hero-title margin-none" style="font-size: 5rem;">Quazi</h1>
+          <h1 class="extra hero-title margin-none" style="font-size: clamp(3rem, 8vw, 5rem);">Quazi</h1>
 
           <div class="hero-action-block">
             <span style="color: var(--primary); font-family: monospace !important; font-size: 0.85rem; font-weight: bold; width: 100%; text-align: center;">
@@ -687,8 +720,8 @@ cargo build --release</code></pre>
         <div class="s12 m4 center-align">
           <h6 class="bold primary-text">Terms & Policies</h6>
           <div class="column gap-small center-align margin-top-small">
-            <a class="footer-link">MIT License</a>
-            <a class="footer-link">Privacy Policy</a>
+            <a class="footer-link" href="https://spdx.org/licenses/0BSD.html" target="_blank" rel="noopener">Zero-Clause BSD (Compiler)</a>
+            <a class="footer-link" href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0 1.0 Universal (Website)</a>
             <a class="footer-link">Code of Conduct</a>
             <a class="footer-link">Security Policy</a>
           </div>
@@ -780,6 +813,8 @@ cargo build --release</code></pre>
       const activePill = document.querySelector(`[data-tab="${tabId}"]`);
       if (activePill) {
         activePill.classList.add('active-pill');
+         
+        activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
 
       if (updateHash) {
